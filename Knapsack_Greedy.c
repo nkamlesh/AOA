@@ -18,7 +18,7 @@ int main()
     int n,i,j,min,W;
     
     float pa=0,wa=0;
-    printf("enter the no f items:");
+    printf("enter the no of items:");
     scanf("%d",&n);
     //reading
     for(i=0;i<n;i++){
@@ -30,8 +30,9 @@ int main()
     }
     printf("Enter capacity of knapsack:");
     scanf("%d",&W);
-    //sorting part
-    for(i=0;i<n;i++){
+    //sorting and adding part
+    printf("Items Added:\n");
+    for(i=0;i<n && W>0;i++){
         min=i;
         for(j=i+1;j<n;j++){
             if(item[i].p_by_w<item[j].p_by_w){
@@ -43,29 +44,18 @@ int main()
             item[i]=item[min];
             item[min]=temp;
         }
-    }
-    printf("item no - profit weight p_by_w\n");
-    for(i=0;i<n;i++){
-        printf("%d - %f %f %f \n",i,item[i].p,item[i].w,item[i].p_by_w);
-    }
-    
-    i=0;
-    printf("Items Added:");
-    // iterating through items
-    while(wa<W){
-        if(item[i].w+wa<=W){
-            wa=wa+item[i].w;
-            pa=pa+item[i].p;
-            printf("%d ",i);
+        if(W-item[i].w>=0){
+        	W=W-item[i].w;
+        	pa=pa+item[i].p;
+        	printf(" item %d added remaining capacity %d\n",i,W);
         }
         else{
-           
-           pa=pa+(item[i].p_by_w)*(W-wa);
-           wa=wa+(W-wa);
-           printf("%d ",i);
+        	pa=pa+item[i].p_by_w*W;
+        	W=0;
+        	printf(" item %d added remaining capacity %d\n",i,W);
         }
-        i++;
-    }
+        
+    }    
     printf("\n Profit earned=%f",pa);
     return 0;
 }

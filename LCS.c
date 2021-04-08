@@ -17,7 +17,7 @@ struct stack{
 };
 struct stack s1;
 
-void printseq(char d[MAX][MAX],char *x, int m, int n){
+void printseq(char **d,char *x, int m, int n){
     int i=m,j=n;
     while(i>0 &&j>0){
         if(d[i][j]=='d'){
@@ -41,10 +41,17 @@ void printseq(char d[MAX][MAX],char *x, int m, int n){
 /* Returns length of LCS for X[0..m-1], Y[0..n-1] */
 int lcs( char *x, char *y, int m, int n )
 {
-   int c[MAX][MAX];
-   char d[MAX][MAX];
+   /*int c[MAX][MAX];
+   char d[MAX][MAX];*/
+   int **c;
+   char **d;
    int i,j;
-   
+   c=(int **)malloc(sizeof(int *) * (m+1));
+   d=(char **)malloc(sizeof(char *) * (m+1));
+   for(i=0;i<=m;i++){
+   	c[i]=(int *)malloc(sizeof(int)*(n+1));
+   	d[i]=(char *)malloc(sizeof(char)*(n+1));
+   }
    for(i=0;i<=m;i++){
        c[i][0]=0;
    }
@@ -70,14 +77,18 @@ int lcs( char *x, char *y, int m, int n )
    }
    for(i=1;i<=m;i++){
        for(j=1;j<=n;j++){
-           printf("%d ",c[i][j]);
+           printf("%2d ",c[i][j]);
        }
        printf("\n");
    }
    i=c[m][n];
    printseq(d,x,m,n);
-   
-   
+   for(j=0;j<=m;j++){
+   	free(c[j]);
+   	free(d[j]);
+   }   
+   free(c);
+   free(d);
    return i;
 }
   
